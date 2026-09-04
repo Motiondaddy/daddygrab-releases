@@ -4,70 +4,122 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Daddygrab</title>
-<meta name="description" content="Видео и звук по ссылке — на компьютер и телефон.">
+<meta name="description" content="Видео и звук по ссылке - на компьютер и телефон.">
 <link rel="icon" href="icon.png">
 <style>
   :root {
     --bg: #000;
-    --panel: #0f0f0f;
-    --line: #2b2b2b;
+    --panel: #0e0e0e;
+    --panel-strong: #131313;
+    --line: #262626;
+    --line-soft: #1c1c1c;
     --text: #e9e9e9;
     --dim: #8c8c8c;
     --faint: #5a5a5a;
+
+    /* Одна лесенка отступов на всю страницу: шаг внутри блока,
+       шаг между блоками, шаг между разделами. */
+    --step: 12px;
+    --gap: 24px;
+    --section: 64px;
+    --pad: 24px;
   }
+
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; background: var(--bg); }
+
   body {
+    position: relative;
     color: var(--text);
     font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
     font-size: 15px;
-    line-height: 1.65;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
     display: flex;
     justify-content: center;
-    padding: 64px 20px 80px;
+    padding: 72px var(--pad) 88px;
+    overflow-x: hidden;
   }
+
+  /* Фон медленно дышит. Никаких мельканий: на тёмной странице
+     заметное движение раздражает и мешает читать. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: -30vmax;
+    z-index: -1;
+    background:
+      radial-gradient(38vmax 38vmax at 22% 18%, rgba(120, 130, 140, 0.10), transparent 60%),
+      radial-gradient(32vmax 32vmax at 82% 72%, rgba(90, 110, 120, 0.09), transparent 62%);
+    animation: drift 46s ease-in-out infinite alternate;
+  }
+  @keyframes drift {
+    from { transform: translate3d(-2%, -1%, 0) scale(1); }
+    to   { transform: translate3d(3%, 2%, 0) scale(1.12); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    body::before { animation: none; }
+  }
+
   main { width: 100%; max-width: 620px; }
 
-  header { text-align: center; margin-bottom: 46px; }
+  header { text-align: center; margin-bottom: var(--section); }
   h1 {
     font-size: clamp(26px, 7vw, 38px);
     letter-spacing: 0.24em;
     font-weight: 500;
-    margin: 0 0 14px;
+    margin: 0 0 var(--step);
     text-indent: 0.24em;
   }
-  .rule { width: 26px; height: 1px; background: var(--line); margin: 0 auto 14px; }
-  .tagline { color: var(--dim); font-size: 13px; margin: 0; }
-  .sources { color: var(--faint); font-size: 12.5px; margin: 6px 0 0; }
+  .rule { width: 26px; height: 1px; background: var(--line); margin: 0 auto var(--step); }
+  .tagline { color: var(--dim); font-size: 13.5px; margin: 0; }
 
-  .downloads { display: grid; gap: 10px; margin-bottom: 40px; }
+  /* Описание - единственный блок, который держит взгляд до кнопок. */
+  .about {
+    background: var(--panel-strong);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: var(--pad);
+    margin-bottom: var(--section);
+  }
+  .about .sources {
+    color: var(--text);
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    margin: 0 0 6px;
+  }
+  .about .kind { color: var(--faint); font-size: 13px; margin: 0 0 var(--gap); }
+  .about p { margin: 0 0 var(--step); }
+  .about p:last-child { margin-bottom: 0; }
+
+  .downloads { display: grid; gap: var(--step); margin-bottom: var(--section); }
   a.get {
     display: flex;
     align-items: baseline;
-    gap: 12px;
-    padding: 16px 18px;
+    gap: var(--step);
+    padding: 18px var(--pad);
     border: 1px solid var(--line);
-    border-radius: 10px;
+    border-radius: 12px;
     background: var(--panel);
     color: var(--text);
     text-decoration: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
   }
-  a.get:hover { border-color: var(--dim); }
+  a.get:hover { border-color: var(--dim); background: var(--panel-strong); }
   a.get .os { font-size: 15px; }
   a.get .meta { color: var(--faint); font-size: 12px; margin-left: auto; text-align: right; }
 
-  section { margin-bottom: 34px; }
+  section { margin-bottom: var(--section); }
   h2 {
     font-size: 12px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--faint);
     font-weight: 500;
-    margin: 0 0 10px;
+    margin: 0 0 var(--gap);
   }
-  p { margin: 0 0 10px; color: var(--dim); font-size: 13.5px; }
-  p.tight { margin-bottom: 4px; }
+  p { margin: 0 0 var(--step); color: var(--dim); font-size: 13.5px; }
+  p:last-child { margin-bottom: 0; }
   b { color: var(--text); font-weight: 500; }
   code {
     color: var(--text);
@@ -78,13 +130,20 @@
     font-size: 12.5px;
   }
   a { color: var(--text); }
+
   footer {
-    border-top: 1px solid var(--line);
-    padding-top: 18px;
+    border-top: 1px solid var(--line-soft);
+    padding-top: var(--gap);
     color: var(--faint);
     font-size: 12px;
+    line-height: 1.9;
   }
   footer a { color: var(--dim); }
+
+  @media (max-width: 480px) {
+    :root { --section: 48px; --pad: 20px; }
+    body { padding: 48px var(--pad) 64px; }
+  }
 </style>
 </head>
 <body>
@@ -93,9 +152,16 @@
   <header>
     <h1>DADDYGRAB</h1>
     <div class="rule"></div>
-    <p class="tagline">Вставил ссылку — получил файл.</p>
-    <p class="sources">YouTube · ВКонтакте · TikTok · Instagram — видео или только звук</p>
+    <p class="tagline">Вставил ссылку - получил файл.</p>
   </header>
+
+  <div class="about">
+    <p class="sources">YouTube · ВКонтакте · TikTok · Instagram</p>
+    <p class="kind">Видео целиком или только звук.</p>
+
+    <p>Приложение для компьютера и телефона. Без рекламы и установки каких-либо дополнительных модулей. Бесплатно и навсегда.</p>
+    <p>Сделано видеомонтажёром, который качает ролики каждый день. Поэтому внутри нет ничего лишнего - только то, чем пользуешься постоянно.</p>
+  </div>
 
   <div class="downloads">
     <a class="get" href="https://github.com/Motiondaddy/daddygrab-releases/releases/latest/download/Daddygrab-windows.zip">
@@ -114,25 +180,21 @@
 
   <section>
     <h2>Как запустить</h2>
-    <p class="tight"><b>Windows.</b> Распаковать архив и открыть <code>Daddygrab.exe</code>. Установка не нужна — папку можно держать где угодно.</p>
-    <p class="tight"><b>macOS.</b> Открыть образ и перетащить приложение в «Программы».</p>
+    <p><b>Windows.</b> Распаковать архив и открыть <code>Daddygrab.exe</code>. Установка не нужна - папку можно держать где угодно.</p>
+    <p><b>macOS.</b> Открыть образ и перетащить приложение в «Программы».</p>
     <p><b>Android.</b> Открыть скачанный файл и разрешить установку.</p>
   </section>
 
   <section>
-    <h2>Система будет ругаться — это нормально</h2>
-    <p>Приложение не подписано платным сертификатом, поэтому при первом запуске:</p>
-    <p class="tight">на <b>Windows</b> появится синее окно — «Подробнее» → «Выполнить в любом случае»;</p>
-    <p>на <b>macOS</b> двойной щелчок не сработает — правый клик по приложению → «Открыть» → «Открыть».</p>
+    <h2>Система будет ругаться - это нормально</h2>
+    <p>Приложение не подписано платным сертификатом, поэтому при первом запуске на <b>Windows</b> появится синее окно - «Подробнее» → «Выполнить в любом случае», а на <b>macOS</b> двойной щелчок не сработает - правый клик по приложению → «Открыть» → «Открыть».</p>
     <p>Дальше запускается обычно. Предупреждение говорит не о том, что внутри что-то плохое, а о том, что за подпись никто не заплатил.</p>
   </section>
 
   <section>
     <h2>Что внутри</h2>
-    <p>Всё своё: приложению не нужны ни Python, ни ffmpeg, ни что-либо ещё — поэтому оно и весит немало.</p>
-    <p>Работу со ссылками делает <a href="https://github.com/yt-dlp/yt-dlp">yt-dlp</a> — общественное достояние.
-       Картинку со звуком собирает <a href="https://ffmpeg.org">FFmpeg</a> — лицензия LGPL/GPL, исходники на ffmpeg.org.
-       На нём держится почти всё видео в мире, и всё это время он остаётся открытым и бесплатным. Спасибо тем, кто его пишет.</p>
+    <p>Всё своё: приложению не нужны ни Python, ни ffmpeg, ни что-либо ещё - поэтому оно и весит немало.</p>
+    <p>Работу со ссылками делает <a href="https://github.com/yt-dlp/yt-dlp">yt-dlp</a> - общественное достояние. Картинку со звуком собирает <a href="https://ffmpeg.org">FFmpeg</a> - лицензия LGPL/GPL, исходники на ffmpeg.org. На нём держится почти всё видео в мире, и всё это время он остаётся открытым и бесплатным. Спасибо тем, кто его пишет.</p>
   </section>
 
   <footer>

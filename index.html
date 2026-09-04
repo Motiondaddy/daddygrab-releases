@@ -106,6 +106,19 @@
     transition: border-color 0.2s ease, background-color 0.2s ease;
   }
   a.get:hover { border-color: var(--dim); background: var(--panel-strong); }
+  a.get .ico {
+    width: 17px;
+    height: 16px;
+    fill: currentColor;
+    color: var(--dim);
+    flex: 0 0 auto;
+    align-self: center;
+    transition: color 0.2s ease, transform 0.2s ease;
+  }
+  a.get:hover .ico { color: var(--text); transform: translateY(2px); }
+  @media (prefers-reduced-motion: reduce) {
+    a.get:hover .ico { transform: none; }
+  }
   a.get .os { font-size: 15px; }
   a.get .meta { color: var(--faint); font-size: 12px; margin-left: auto; text-align: right; }
 
@@ -165,14 +178,38 @@
 
   <div class="downloads">
     <a class="get" href="https://github.com/Motiondaddy/daddygrab-releases/releases/latest/download/Daddygrab-windows.zip">
+      <svg class="ico" viewBox="0 0 12 10" aria-hidden="true" shape-rendering="crispEdges">
+        <rect x="5" y="0" width="2" height="6"/>
+        <rect x="3" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/>
+        <rect x="4" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/>
+        <rect x="5" y="6" width="2" height="2"/>
+        <rect x="0" y="7" width="1" height="2"/><rect x="11" y="7" width="1" height="2"/>
+        <rect x="0" y="9" width="12" height="1"/>
+      </svg>
       <span class="os">Windows</span>
       <span class="meta">папка, без установки</span>
     </a>
     <a class="get" href="https://github.com/Motiondaddy/daddygrab-releases/releases/latest/download/Daddygrab.dmg">
+      <svg class="ico" viewBox="0 0 12 10" aria-hidden="true" shape-rendering="crispEdges">
+        <rect x="5" y="0" width="2" height="6"/>
+        <rect x="3" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/>
+        <rect x="4" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/>
+        <rect x="5" y="6" width="2" height="2"/>
+        <rect x="0" y="7" width="1" height="2"/><rect x="11" y="7" width="1" height="2"/>
+        <rect x="0" y="9" width="12" height="1"/>
+      </svg>
       <span class="os">macOS</span>
       <span class="meta">образ, Apple Silicon</span>
     </a>
     <a class="get" href="https://github.com/Motiondaddy/daddygrab-releases/releases/latest/download/Daddygrab.apk">
+      <svg class="ico" viewBox="0 0 12 10" aria-hidden="true" shape-rendering="crispEdges">
+        <rect x="5" y="0" width="2" height="6"/>
+        <rect x="3" y="5" width="1" height="1"/><rect x="8" y="5" width="1" height="1"/>
+        <rect x="4" y="6" width="1" height="1"/><rect x="7" y="6" width="1" height="1"/>
+        <rect x="5" y="6" width="2" height="2"/>
+        <rect x="0" y="7" width="1" height="2"/><rect x="11" y="7" width="1" height="2"/>
+        <rect x="0" y="9" width="12" height="1"/>
+      </svg>
       <span class="os">Android</span>
       <span class="meta">apk, 8.0 и новее</span>
     </a>

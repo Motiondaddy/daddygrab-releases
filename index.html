@@ -123,6 +123,43 @@
   a.get .meta { color: var(--faint); font-size: 12px; margin-left: auto; text-align: right; }
 
   section { margin-bottom: var(--section); }
+
+  /* Инструкции свёрнуты: их читают один раз и только под свою систему.
+     Развёрнутые, они превращали страницу в стену текста. */
+  details {
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    background: var(--panel);
+    margin-bottom: var(--step);
+  }
+  details[open] { border-color: var(--line); }
+  summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 15px var(--pad);
+    font-size: 13.5px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::before {
+    content: "+";
+    color: var(--faint);
+    font-size: 14px;
+    line-height: 1;
+    width: 10px;
+  }
+  details[open] summary::before { content: "−"; }
+  summary:hover { color: var(--text); }
+  summary:hover::before { color: var(--dim); }
+  .inner { padding: 0 var(--pad) var(--pad); }
+  .inner p { margin: 0 0 var(--step); }
+  .inner p:last-child { margin-bottom: 0; }
+  ol { margin: 0 0 var(--step); padding-left: 22px; color: var(--dim); font-size: 13.5px; }
+  ol li { margin-bottom: 6px; }
+  ol li::marker { color: var(--faint); }
   h2 {
     font-size: 12px;
     letter-spacing: 0.16em;
@@ -217,15 +254,45 @@
 
   <section>
     <h2>Как запустить</h2>
-    <p><b>Windows.</b> Распаковать архив и открыть <code>Daddygrab.exe</code>. Установка не нужна - папку можно держать где угодно.</p>
-    <p><b>macOS.</b> Открыть образ и перетащить приложение в «Программы».</p>
-    <p><b>Android.</b> Открыть скачанный файл и разрешить установку.</p>
-  </section>
+    <p>Приложение не подписано платным сертификатом, поэтому при первом запуске система предупредит. Это разовая процедура: дальше программа открывается как любая другая.</p>
 
-  <section>
-    <h2>Система будет ругаться - это нормально</h2>
-    <p>Приложение не подписано платным сертификатом, поэтому при первом запуске на <b>Windows</b> появится синее окно - «Подробнее» → «Выполнить в любом случае», а на <b>macOS</b> двойной щелчок не сработает - правый клик по приложению → «Открыть» → «Открыть».</p>
-    <p>Дальше запускается обычно. Предупреждение говорит не о том, что внутри что-то плохое, а о том, что за подпись я не заплатил :)</p>
+    <details>
+      <summary>Windows</summary>
+      <div class="inner">
+        <ol>
+          <li>Распаковать архив и открыть <code>Daddygrab.exe</code>. Установка не нужна, папку можно держать где угодно.</li>
+          <li>Появится синее окно «Система Windows защитила ваш компьютер» - нажать «Подробнее».</li>
+          <li>Нажать «Выполнить в любом случае».</li>
+        </ol>
+      </div>
+    </details>
+
+    <details>
+      <summary>macOS</summary>
+      <div class="inner">
+        <ol>
+          <li>Открыть образ и перетащить Daddygrab в «Программы».</li>
+          <li>Запустить. Появится окно о том, что файл не был открыт - нажать «Готово».</li>
+          <li>Открыть «Системные настройки» → «Конфиденциальность и безопасность».</li>
+          <li>Пролистать вниз до строки «Файл „Daddygrab“ заблокирован для защиты Вашего Mac» и нажать «Все равно открыть».</li>
+          <li>В появившемся окне ещё раз нажать «Все равно открыть».</li>
+          <li>Ввести пароль от учётной записи Mac.</li>
+        </ol>
+        <p>Дальше приложение запускается обычным двойным щелчком, и больше ничего спрашивать не будет.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Android</summary>
+      <div class="inner">
+        <ol>
+          <li>Открыть скачанный файл.</li>
+          <li>Разрешить установку из этого источника, если система попросит.</li>
+        </ol>
+      </div>
+    </details>
+
+    <p>Предупреждение говорит не о том, что внутри что-то плохое, а о том, что за подпись я не заплатил :)</p>
   </section>
 
   <section>
